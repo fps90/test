@@ -6,9 +6,9 @@ from telethon import TelegramClient, events
 from telethon.tl.functions.contacts import ResolveUsernameRequest
 from telethon.errors import UsernameNotOccupiedError, UsernameInvalidError
 
-API_ID = 8934899
-API_HASH = "bf3e98d2c351e4ad06946b4897374a1e"
-BOT_TOKEN = "8474977711:AAFcuvjZd-VWM7wyhZ2l_vnHpYp_imbhxAo"
+API_ID = 26372231
+API_HASH = "22bb44b8bd17877fc9ac062532a0d26e"
+BOT_TOKEN = "8234331423:AAHDDsuFiu12PH0tu-REVM-FJpNI52z-3Tk"
 
 tele_client = TelegramClient("botyee", API_ID, API_HASH)
 # المطور الوحيد @RR8R9  
