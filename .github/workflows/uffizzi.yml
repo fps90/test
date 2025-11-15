@@ -13,14 +13,10 @@ jobs:
 
       - name: Create Uffizzi Preview
         uses: UffizziCloud/preview-action@v2
+        env:
+          UFFIZZI_USER: ${{ secrets.UFFIZZI_USER }}
+          UFFIZZI_PASSWORD: ${{ secrets.UFFIZZI_PASSWORD }}
+          UFFIZZI_SERVER: ${{ secrets.UFFIZZI_SERVER }}
         with:
-          # اسم المستخدم الخاص بك في Uffizzi
-          username: ${{ secrets.UFFIZZI_USER }}
-          # كلمة المرور الخاصة بك (من الأسرار)
-          password: ${{ secrets.UFFIZZI_PASSWORD }}
-          # الخادم الخاص بـ Uffizzi
-          server: ${{ secrets.UFFIZZI_SERVER }}
-          # اسم المشروع (الـ slug) الذي أنشأته
           project: 'muntazer900-qlhi'
-          # مسار ملف docker-compose.yml
           compose-file: 'docker-compose.yml'
