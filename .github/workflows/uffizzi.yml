@@ -1,15 +1,18 @@
-name: Uffizzi Preview Environment
+name: Uffizzi Manual Deploy
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  # هذا يسمح لنا بتشغيل سير العمل يدويًا من واجهة GitHub
+  workflow_dispatch:
 
 jobs:
   create-preview:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
+        # هنا نقوم بسحب الكود من الفرع الرئيسي مباشرة
         uses: actions/checkout@v4
+        with:
+          ref: main # تأكد من أن اسم الفرع الرئيسي هو main
 
       - name: Create Uffizzi Preview
         uses: UffizziCloud/preview-action@v2
