@@ -18,6 +18,6 @@ jobs:
         uses: UffizziCloud/preview-action@v2
         with:
           # اسم المشروع على Uffizzi (يجب أن يتطابق مع الاسم هناك)
-          project-slug: 'test'
+          project-slug: 'muntazer900-qlhi'
           # مسار ملف docker-compose.yml
           compose-file-path: 'docker-compose.yml'
