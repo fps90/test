@@ -1,7 +1,6 @@
 name: Uffizzi Preview Environment
 
 on:
-  # هذا الكود سيعمل عند فتح أو تحديث أي طلب سحب (Pull Request)
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -9,15 +8,19 @@ jobs:
   create-preview:
     runs-on: ubuntu-latest
     steps:
-      # 1. سحب الكود من المستودع
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. إنشاء بيئة المعاينة باستخدام Uffizzi
       - name: Create Uffizzi Preview
         uses: UffizziCloud/preview-action@v2
         with:
-          # اسم المشروع على Uffizzi (يجب أن يتطابق مع الاسم هناك)
-          project-slug: 'muntazer900-qlhi'
+          # اسم المستخدم الخاص بك في Uffizzi
+          username: ${{ secrets.UFFIZZI_USER }}
+          # كلمة المرور الخاصة بك (من الأسرار)
+          password: ${{ secrets.UFFIZZI_PASSWORD }}
+          # الخادم الخاص بـ Uffizzi
+          server: ${{ secrets.UFFIZZI_SERVER }}
+          # اسم المشروع (الـ slug) الذي أنشأته
+          project: 'muntazer900-qlhi'
           # مسار ملف docker-compose.yml
-          compose-file-path: 'docker-compose.yml'
+          compose-file: 'docker-compose.yml'
