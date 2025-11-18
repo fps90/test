@@ -2,19 +2,38 @@ import asyncio
 import random
 import string
 import re
+import os
+import threading
 from telethon import TelegramClient, events
 from telethon.tl.functions.contacts import ResolveUsernameRequest
 from telethon.errors import UsernameNotOccupiedError, UsernameInvalidError
+from flask import Flask
 
+# --- إعدادات الخادم والبوت ---
 API_ID = 26372231
 API_HASH = "22bb44b8bd17877fc9ac062532a0d26e"
 BOT_TOKEN = "8234331423:AAHztPNXzTSP8VcqAj2xaydcMras3IEjBvQ"
 
+# --- إعداد خادم Flask لفحص الصحة ---
+app = Flask(__name__)
 
+@app.route('/')
+def health_check():
+    """هذه هي نقطة النهاية التي سترد على فحص الصحة."""
+    return "Bot is alive and running!", 200
+
+def run_flask_app():
+    """تشغيل خادم Flask في خيط منفصل."""
+    # الحصول على المنفذ من متغيرات البيئة، مع قيمة افتراضية 8000
+    port = int(os.environ.get("PORT", 8000))
+    # الاستماع على 0.0.0.0 ليكون متاحًا من خارج الحاوية
+    app.run(host='0.0.0.0', port=port)
+
+# --- إعداد بوت تليجرام ---
 tele_client = TelegramClient("botyee", API_ID, API_HASH)
-# المطور الوحيد @RR8R9  
 user_states = {}
 
+# --- دوال البوت (تبقى كما هي) ---
 @tele_client.on(events.NewMessage(pattern=r'^/start$'))
 async def start_handler(event):
     await event.reply("أهلًا بك في بوت فحص وتوليد اليوزرات\n\n-  الأمر /generation لتوليد يوزرات .\n- الأمر /check لفحص اليوزر .")
@@ -106,6 +125,26 @@ async def check_handler(event):
         await asyncio.sleep(3)  
 
     await event.reply("\n".join(results[:50]))
+
+# --- الدالة الرئيسية المعدلة ---
+async def main():
+    """الدالة الرئيسية التي تشغل البوت."""
+    await tele_client.start(bot_token=BOT_TOKEN)
+    print("Bot has started successfully!")
+    await tele_client.run_until_disconnected()
+
+if __name__ == "__main__":
+    # 1. تشغيل خادم Flask في خيط منفصل
+    print("Starting Flask server for health checks...")
+    flask_thread = threading.Thread(target=run_flask_app)
+    flask_thread.daemon = True  # يسمح للبرنامج بالخروج حتى لو كان الخيط يعمل
+    flask_thread.start()
+
+    # 2. تشغيل بوت Telethon في الخيط الرئيسي
+    print("Starting Telethon bot...")
+    # يستخدم loop موجود بالفعل إذا كان متوفرًا
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 
 async def main():
     await tele_client.start(bot_token=BOT_TOKEN)
